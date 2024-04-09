@@ -92,7 +92,7 @@ Public Class RentalForm
         Try
             zip = CULng(ZipCodeTextBox.Text)
             Select Case zip
-                Case < 1
+                Case <= 1
                     ZipCodeTextBox.BackColor = Color.LightYellow
                     Return False
                 Case > 0
@@ -116,9 +116,6 @@ Public Class RentalForm
         Try
             beginOdometer = CULng(BeginOdometerTextBox.Text)
             Select Case beginOdometer
-                Case < 1
-                    BeginOdometerTextBox.BackColor = Color.LightYellow
-                    Return False
                 Case > 0
                     If beginOdometer >= endOdometer Then
                         BeginOdometerTextBox.BackColor = Color.LightYellow
@@ -194,5 +191,13 @@ Public Class RentalForm
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
         FieldsValidation()
 
+    End Sub
+
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+        Me.Close()
+    End Sub
+
+    Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
+        SetDefaults()
     End Sub
 End Class
