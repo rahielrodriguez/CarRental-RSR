@@ -7,6 +7,7 @@ Public Class RentalForm
 
     Dim beginOdometer As Integer
     Dim endOdometer As Integer
+    Dim daysNumber As Integer
     Dim listOfStates As New List(Of String)
     Sub SetDefaults()
         NameTextBox.Text = ""
@@ -21,6 +22,7 @@ Public Class RentalForm
         KilometersradioButton.Checked = False
         AAAcheckbox.Checked = False
         Seniorcheckbox.Checked = False
+        StatesRecord()
 
         NameTextBox.Focus()
     End Sub
@@ -29,7 +31,7 @@ Public Class RentalForm
         'TODO
         '[x]Name cannot be blank
         '[x]Name has to be just letters
-        '[ ]Not Valid characters will be deleted
+
 
         Dim name As Boolean
 
@@ -52,7 +54,7 @@ Public Class RentalForm
         'TODO
         '[x]Address cannot be blank
         '[X]Address only can have letters and numbers
-        '[ ]Not Valid characters will be deleted
+
 
         Dim address As Boolean
         If AddressTextBox.Text = "" Then
@@ -74,7 +76,7 @@ Public Class RentalForm
         'TODO
         '[x]City cannot be blank
         '[x]City only can have letters
-        '[ ]Not Valid characters will be deleted
+
         Dim city As Boolean
 
         If CityTextBox.Text = "" Then
@@ -112,9 +114,8 @@ Public Class RentalForm
         '[x]State only can have letters
         '[x]State can only contain 2 letters
         '[x]State letters have to be Upper Cases
-        '[ ]Not Valid characters will be deleted
-        '[ ]Only US States caming from a list can be validated.
-        '[ ]Make it to compare user input vs states record
+        '[X]Only US States caming from a list can be validated.
+        '[X]Make it to compare user input vs states record
         Dim state As Boolean
         If StateTextBox.Text = "" Then
             StateTextBox.BackColor = Color.LightYellow
@@ -123,7 +124,8 @@ Public Class RentalForm
             state = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z ]+$")
             If state Then
                 For Each record In Me.listOfStates
-                    If record = StateTextBox.Text Then
+                    If record = UCase(StateTextBox.Text) Then
+                        StateTextBox.Text = UCase(StateTextBox.Text)
                         StateTextBox.BackColor = Color.White
                         Return True
                     Else
@@ -132,6 +134,7 @@ Public Class RentalForm
                 Next
             Else
                 StateTextBox.BackColor = Color.LightYellow
+                Return False
             End If
             Return state
         End If
@@ -140,7 +143,7 @@ Public Class RentalForm
         'TODO
         '[x]Zip cannot be blank
         '[x]Zip only can have a whole number
-        '[ ]Not Valid characters will be deleted
+
 
         Dim zip As ULong
 
@@ -164,7 +167,7 @@ Public Class RentalForm
         'TODO
         '[x]Begin Odometer cannot be blank
         '[x]Begin Odometer only can have a whole number
-        '[ ]Not Valid characters will be deleted
+
 
         Try
             beginOdometer = CInt(BeginOdometerTextBox.Text)
@@ -179,7 +182,7 @@ Public Class RentalForm
         'TODO
         '[x]End Odometer cannot be blank
         '[x]End Odometer only can have a whole number
-        '[ ]Not Valid characters will be deleted
+
 
         Try
             endOdometer = CInt(EndOdometerTextBox.Text)
@@ -204,22 +207,25 @@ Public Class RentalForm
             BeginOdometerTextBox.BackColor = Color.LightYellow
             EndOdometerTextBox.BackColor = Color.LightYellow
             Return False
-        Else
+        ElseIf beginOdometer < endOdometer Then
             BeginOdometerTextBox.BackColor = Color.White
             EndOdometerTextBox.BackColor = Color.White
             Return True
+        Else
+            BeginOdometerTextBox.BackColor = Color.LightYellow
+            EndOdometerTextBox.BackColor = Color.LightYellow
+            Return False
         End If
     End Function
     Function DayChargeValidation() As Boolean
         'TODO
         '[x]Days Charged cannot be blank
         '[x]Days Charged only can have a whole number
-        '[ ]Not Valid characters will be deleted
         '[x]Days must bet between 1 and 45
-        Dim daysCharge As Integer
+
         Try
-            daysCharge = CInt(DaysTextBox.Text)
-            Select Case daysCharge
+            daysNumber = CInt(DaysTextBox.Text)
+            Select Case daysNumber
                 Case < 1
                     DaysTextBox.BackColor = Color.LightYellow
                     Return False
@@ -236,6 +242,7 @@ Public Class RentalForm
         End Try
     End Function
     Sub FieldsValidation()
+        StatesRecord()
         NameValidation()
         AddressValidation()
         CityValidation()
@@ -245,8 +252,38 @@ Public Class RentalForm
         EndOdometerValidation()
         OdometerValidation()
         DayChargeValidation()
-
     End Sub
+    'Private Sub TextBox_Leave(sender As Object, e As EventArgs) Handles NameTextBox.Leave, AddressTextBox.Leave, CityTextBox.Leave, StateTextBox.Leave, ZipCodeTextBox.Leave, BeginOdometerTextBox.Leave, EndOdometerTextBox.Leave, DayChargeTextBox.Leave
+
+    '    If NameValidation() = False Then
+    '        NameTextBox.Focus()
+
+    '    ElseIf AddressValidation() = False Then
+    '        AddressTextBox.Focus()
+
+    '    ElseIf CityValidation() = False Then
+    '        CityTextBox.Focus()
+
+    '    ElseIf StateValidation() = False Then
+    '        StateTextBox.Focus()
+
+    '    ElseIf ZipValidation() = False Then
+    '        ZipCodeTextBox.Focus()
+
+    '    ElseIf BeginOdometerValidation() = False Then
+    '        BeginOdometerTextBox.Focus()
+
+    '    ElseIf EndOdometerValidation() = False Then
+    '        EndOdometerTextBox.Focus()
+
+    '    ElseIf OdometerValidation() = False Then
+    '        BeginOdometerTextBox.Focus()
+
+    '    ElseIf DayChargeValidation() = False Then
+    '        DaysTextBox.Focus()
+    '    End If
+
+    'End Sub
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
         FieldsValidation()
@@ -260,4 +297,6 @@ Public Class RentalForm
     Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
         SetDefaults()
     End Sub
+
+
 End Class
