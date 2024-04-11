@@ -114,8 +114,8 @@ Public Class RentalForm
         '[x]State only can have letters
         '[x]State can only contain 2 letters
         '[x]State letters have to be Upper Cases
-        '[X]Only US States caming from a list can be validated.
-        '[X]Make it to compare user input vs states record
+        '[ ]Only US States coming from a list with all states can be validated.
+        '[ ]Make it to compare user input vs states record
         Dim state As Boolean
         If StateTextBox.Text = "" Then
             StateTextBox.BackColor = Color.LightYellow
@@ -298,5 +298,23 @@ Public Class RentalForm
         SetDefaults()
     End Sub
 
+    'TODO - CALCULATIONS
+    '[x]Set a daily charge and calculations
+    '[ ]Set a mileage charge
+    '[ ]Set first 200 files for free
+    '[ ]Set price at 12 centes per mile from 201 to 500 miles
+    '[ ]Set price at 10 cents for mileage greater than 500
+    '[ ]If user inputs are in kilometers, convert them to miles and do calculations
+    '[ ]Apply AAA and Senior discounts
 
+    Sub DailyCharge()
+        Dim dailyPrice As Double
+        Dim dailyCharge As Double
+
+        daysNumber = CInt(DaysTextBox.Text)
+        dailyPrice = 0.15
+        dailyCharge = dailyPrice * daysNumber
+
+        DayChargeTextBox.Text = CStr(dailyCharge)
+    End Sub
 End Class
