@@ -287,7 +287,7 @@ Public Class RentalForm
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
         FieldsValidation()
-
+        DailyCharge()
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
