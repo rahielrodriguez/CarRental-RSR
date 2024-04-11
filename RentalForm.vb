@@ -5,6 +5,9 @@ Imports System.Runtime.CompilerServices
 
 Public Class RentalForm
 
+    Dim beginOdometer As Integer
+    Dim endOdometer As Integer
+    Dim listOfStates As New List(Of String)
     Sub SetDefaults()
         NameTextBox.Text = ""
         AddressTextBox.Text = ""
@@ -25,61 +28,113 @@ Public Class RentalForm
 
         'TODO
         '[x]Name cannot be blank
-        '[ ]Name has to be just letters
+        '[x]Name has to be just letters
         '[ ]Not Valid characters will be deleted
+
+        Dim name As Boolean
 
         If NameTextBox.Text = "" Then
             NameTextBox.BackColor = Color.LightYellow
             Return False
         Else
-            NameTextBox.BackColor = Color.White
-            Return True
-        End If
+            name = System.Text.RegularExpressions.Regex.IsMatch(NameTextBox.Text, "^[A-Za-z ]+$")
 
+            If name Then
+                NameTextBox.BackColor = Color.White
+            Else
+                NameTextBox.BackColor = Color.LightYellow
+            End If
+            Return name
+        End If
     End Function
     Function AddressValidation() As Boolean
 
         'TODO
         '[x]Address cannot be blank
-        '[ ]Address only can have letters and numbers
+        '[X]Address only can have letters and numbers
         '[ ]Not Valid characters will be deleted
+
+        Dim address As Boolean
         If AddressTextBox.Text = "" Then
             AddressTextBox.BackColor = Color.LightYellow
             Return False
         Else
-            AddressTextBox.BackColor = Color.White
-            Return True
+            address = System.Text.RegularExpressions.Regex.IsMatch(AddressTextBox.Text, "^[A-Za-z0-9 ]+$")
+
+            If address Then
+                AddressTextBox.BackColor = Color.White
+            Else
+                AddressTextBox.BackColor = Color.LightYellow
+            End If
+            Return address
+
         End If
     End Function
     Function CityValidation() As Boolean
         'TODO
         '[x]City cannot be blank
-        '[ ]City only can have letters
+        '[x]City only can have letters
         '[ ]Not Valid characters will be deleted
+        Dim city As Boolean
+
         If CityTextBox.Text = "" Then
             CityTextBox.BackColor = Color.LightYellow
             Return False
         Else
-            CityTextBox.BackColor = Color.White
-            Return True
+            city = System.Text.RegularExpressions.Regex.IsMatch(CityTextBox.Text, "^[A-Za-z ]+$")
+            If city Then
+                CityTextBox.BackColor = Color.White
+            Else
+                CityTextBox.BackColor = Color.LightYellow
+            End If
+            Return city
         End If
     End Function
+    Sub StatesRecord()
+        'Generates an internal list of all the US states abbreviations
+
+        Dim stateRecord As String
+        Try
+            FileOpen(1, "List_of_States.txt", OpenMode.Input)
+            Do Until EOF(1)
+                Input(1, stateRecord)
+
+                Me.listOfStates.Add(stateRecord)
+            Loop
+        Catch ex As Exception
+
+        End Try
+        FileClose(1)
+    End Sub
     Function StateValidation() As Boolean
         'TODO
         '[x]State cannot be blank
-        '[ ]State only can have letters
-        '[ ]State can only contain 2 letters
+        '[x]State only can have letters
+        '[x]State can only contain 2 letters
         '[x]State letters have to be Upper Cases
         '[ ]Not Valid characters will be deleted
-
+        '[ ]Only US States caming from a list can be validated.
+        '[ ]Make it to compare user input vs states record
+        Dim state As Boolean
         If StateTextBox.Text = "" Then
             StateTextBox.BackColor = Color.LightYellow
             Return False
         Else
-            StateTextBox.BackColor = Color.White
-            Return True
-        End If
+            state = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z ]+$")
+            If state Then
+                For Each record In Me.listOfStates
+                    If record = StateTextBox.Text Then
+                        StateTextBox.BackColor = Color.White
+                        Return True
+                    Else
 
+                    End If
+                Next
+            Else
+                StateTextBox.BackColor = Color.LightYellow
+            End If
+            Return state
+        End If
     End Function
     Function ZipValidation() As Boolean
         'TODO
@@ -109,22 +164,12 @@ Public Class RentalForm
         'TODO
         '[x]Begin Odometer cannot be blank
         '[x]Begin Odometer only can have a whole number
-        '[X]Begin Odometer must be less than End Odometer
         '[ ]Not Valid characters will be deleted
-        Dim beginOdometer As ULong
-        Dim endOdometer As ULong
+
         Try
-            beginOdometer = CULng(BeginOdometerTextBox.Text)
-            Select Case beginOdometer
-                Case > 0
-                    If beginOdometer >= endOdometer Then
-                        BeginOdometerTextBox.BackColor = Color.LightYellow
-                        Return False
-                    ElseIf beginOdometer < endOdometer Then
-                        BeginOdometerTextBox.BackColor = Color.White
-                        Return True
-                    End If
-            End Select
+            beginOdometer = CInt(BeginOdometerTextBox.Text)
+            BeginOdometerTextBox.BackColor = Color.White
+            Return True
         Catch ex As Exception
             BeginOdometerTextBox.BackColor = Color.LightYellow
             Return False
@@ -135,10 +180,10 @@ Public Class RentalForm
         '[x]End Odometer cannot be blank
         '[x]End Odometer only can have a whole number
         '[ ]Not Valid characters will be deleted
-        Dim _endOdometer As ULong
+
         Try
-            _endOdometer = CULng(BeginOdometerTextBox.Text)
-            Select Case _endOdometer
+            endOdometer = CInt(EndOdometerTextBox.Text)
+            Select Case endOdometer
                 Case < 1
                     EndOdometerTextBox.BackColor = Color.LightYellow
                     Return False
@@ -151,15 +196,29 @@ Public Class RentalForm
             Return False
         End Try
     End Function
+    Function OdometerValidation() As Boolean
+
+        '[X]Begin Odometer must be less than End Odometer
+
+        If beginOdometer > endOdometer Then
+            BeginOdometerTextBox.BackColor = Color.LightYellow
+            EndOdometerTextBox.BackColor = Color.LightYellow
+            Return False
+        Else
+            BeginOdometerTextBox.BackColor = Color.White
+            EndOdometerTextBox.BackColor = Color.White
+            Return True
+        End If
+    End Function
     Function DayChargeValidation() As Boolean
         'TODO
         '[x]Days Charged cannot be blank
         '[x]Days Charged only can have a whole number
         '[ ]Not Valid characters will be deleted
         '[x]Days must bet between 1 and 45
-        Dim daysCharge As ULong
+        Dim daysCharge As Integer
         Try
-            daysCharge = CULng(DaysTextBox.Text)
+            daysCharge = CInt(DaysTextBox.Text)
             Select Case daysCharge
                 Case < 1
                     DaysTextBox.BackColor = Color.LightYellow
@@ -184,6 +243,7 @@ Public Class RentalForm
         ZipValidation()
         BeginOdometerValidation()
         EndOdometerValidation()
+        OdometerValidation()
         DayChargeValidation()
 
     End Sub

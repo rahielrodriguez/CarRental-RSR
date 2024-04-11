@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -58,6 +58,69 @@ Namespace My.Resources
             Set
                 resourceCulture = value
             End Set
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to AK
+        '''AS
+        '''AZ
+        '''AR
+        '''CA
+        '''CO
+        '''CT
+        '''DE
+        '''DC
+        '''FL
+        '''GA
+        '''GU
+        '''HI
+        '''ID
+        '''IL
+        '''IN
+        '''IA
+        '''KS
+        '''KY
+        '''LA
+        '''ME
+        '''MD
+        '''MA
+        '''MI
+        '''MN
+        '''MS
+        '''MO
+        '''MT
+        '''NE
+        '''NV
+        '''NH
+        '''NJ
+        '''NM
+        '''NY
+        '''NC
+        '''ND
+        '''MP
+        '''OH
+        '''OK
+        '''OR
+        '''PA
+        '''PR
+        '''RI
+        '''SC
+        '''SD
+        '''TN
+        '''TX
+        '''UT
+        '''VT
+        '''VA
+        '''VI
+        '''WA
+        '''WV
+        '''WI
+        '''WY.
+        '''</summary>
+        Friend ReadOnly Property List_of_States() As String
+            Get
+                Return ResourceManager.GetString("List_of_States", resourceCulture)
+            End Get
         End Property
     End Module
 End Namespace
