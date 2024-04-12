@@ -5,8 +5,8 @@ Imports System.Runtime.CompilerServices
 
 Public Class RentalForm
 
-    Dim beginOdometer As Integer
-    Dim endOdometer As Integer
+    Dim beginOdometer As Double
+    Dim endOdometer As Double
     Dim daysNumber As Integer
     Dim listOfStates As New List(Of String)
     Dim dailyPrice As Double
@@ -18,6 +18,12 @@ Public Class RentalForm
     Dim totalPrice As Double
     Dim tripleAAADiscount As Double
     Dim seniorDiscount As Double
+    Dim totalClients As Integer
+    Dim summaryTotalMiles As Double
+    Dim summaryTotalCharge As Double
+    Dim summaryDisplayMiles As String
+    Dim summaryDisplayCharge As String
+
     Sub SetDefaults()
         NameTextBox.Text = ""
         AddressTextBox.Text = ""
@@ -179,7 +185,7 @@ Public Class RentalForm
 
 
         Try
-            beginOdometer = CInt(BeginOdometerTextBox.Text)
+            beginOdometer = CDbl(BeginOdometerTextBox.Text)
             BeginOdometerTextBox.BackColor = Color.White
             Return True
         Catch ex As Exception
@@ -194,7 +200,7 @@ Public Class RentalForm
 
 
         Try
-            endOdometer = CInt(EndOdometerTextBox.Text)
+            endOdometer = CDbl(EndOdometerTextBox.Text)
             Select Case endOdometer
                 Case < 1
                     EndOdometerTextBox.BackColor = Color.LightYellow
@@ -300,6 +306,13 @@ Public Class RentalForm
         MileageCharge()
         Discounts()
         TotalCharge()
+
+        totalClients += 1
+        summaryTotalMiles += CDbl(odometerNumber)
+        summaryTotalCharge += CDbl(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))
+
+        summaryDisplayMiles = $"{CStr(summaryTotalMiles)}"
+        summaryDisplayCharge = $"{CStr(summaryTotalCharge)}"
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
@@ -376,5 +389,17 @@ Public Class RentalForm
     End Sub
 
     'TODO - Summary
+    '[ ]Create a summary message box
+    '[ ]Display total number of customers in the pop up
+    '[ ]Display total number of miles driven
+    '[ ]Display total number of charges made
+    '[ ]Do not clean the summary is clear is pressed
 
+    Sub Summary()
+        MsgBox($"Total Number of Clients = {totalClients}{vbNewLine}Total Miles Driven = {summaryDisplayMiles}{vbNewLine}Total Charges Collected = {summaryTotalCharge}")
+    End Sub
+
+    Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
+        Summary()
+    End Sub
 End Class
