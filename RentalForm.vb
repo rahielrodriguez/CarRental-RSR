@@ -1,8 +1,12 @@
-﻿Option Explicit On
+﻿'Rahiel Rodriguez
+'RCET 0265
+'Spring 2024
+'Car Rental
+'https://github.com/rahielrodriguez/CarRental-RSR.git
+
+Option Explicit On
 Option Strict On
 Option Compare Binary
-Imports System.Runtime.CompilerServices
-Imports System.Windows.Forms.AxHost
 
 Public Class RentalForm
 
@@ -24,6 +28,7 @@ Public Class RentalForm
     Dim summaryTotalCharge As Double
     Dim summaryDisplayMiles As String
     Dim summaryDisplayCharge As String
+    Dim message As String
 
     Sub SetDefaults()
         NameTextBox.Text = ""
@@ -66,6 +71,7 @@ Public Class RentalForm
 
         If NameTextBox.Text = "" Then
             NameTextBox.BackColor = Color.LightYellow
+            message &= "Valid First Name is Requires" & vbNewLine
             Return False
         Else
             name = System.Text.RegularExpressions.Regex.IsMatch(NameTextBox.Text, "^[A-Za-z ]+$")
@@ -75,6 +81,7 @@ Public Class RentalForm
                 Return True
             Else
                 NameTextBox.BackColor = Color.LightYellow
+                message &= "Valid First Name is Required" & vbNewLine
                 Return False
             End If
             Return name
@@ -90,6 +97,7 @@ Public Class RentalForm
         Dim address As Boolean
         If AddressTextBox.Text = "" Then
             AddressTextBox.BackColor = Color.LightYellow
+            message &= "Valid Address is Required" & vbNewLine
             Return False
         Else
             address = System.Text.RegularExpressions.Regex.IsMatch(AddressTextBox.Text, "^[A-Za-z0-9 ]+$")
@@ -99,6 +107,7 @@ Public Class RentalForm
                 Return True
             Else
                 AddressTextBox.BackColor = Color.LightYellow
+                message &= "Valid Address is Required" & vbNewLine
                 Return False
             End If
             Return address
@@ -114,6 +123,7 @@ Public Class RentalForm
 
         If CityTextBox.Text = "" Then
             CityTextBox.BackColor = Color.LightYellow
+            message &= "Valid City is Required" & vbNewLine
             Return False
         Else
             city = System.Text.RegularExpressions.Regex.IsMatch(CityTextBox.Text, "^[A-Za-z ]+$")
@@ -122,6 +132,7 @@ Public Class RentalForm
                 Return True
             Else
                 CityTextBox.BackColor = Color.LightYellow
+                message &= "Valid City is Required" & vbNewLine
                 Return False
             End If
             Return city
@@ -155,6 +166,7 @@ Public Class RentalForm
 
         If StateTextBox.Text = "" Then
             StateTextBox.BackColor = Color.LightYellow
+            message &= "Valid State is Required" & vbNewLine
             Return False
         Else
             state = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Z ]+$")
@@ -168,12 +180,14 @@ Public Class RentalForm
                     End If
                 Next
                 If StateTextBox.BackColor = Color.LightYellow Then
+                    message &= "Valid State is Required" & vbNewLine
                     Return False
                 Else
 
                 End If
             Else
                 StateTextBox.BackColor = Color.LightYellow
+                message &= "Valid State is Required" & vbNewLine
                 Return False
             End If
             Return state
@@ -191,6 +205,7 @@ Public Class RentalForm
             Select Case zip
                 Case <= 1
                     ZipCodeTextBox.BackColor = Color.LightYellow
+                    message &= "Valid Zip is Required and must be a whole number" & vbNewLine
                     Return False
                 Case > 0
                     ZipCodeTextBox.BackColor = Color.White
@@ -198,6 +213,7 @@ Public Class RentalForm
             End Select
         Catch ex As Exception
             ZipCodeTextBox.BackColor = Color.LightYellow
+            message &= "Valid Zip is Required and must be a whole number" & vbNewLine
             Return False
         End Try
 
@@ -212,6 +228,7 @@ Public Class RentalForm
             Select Case beginOdometer
                 Case < 1
                     BeginOdometerTextBox.BackColor = Color.LightYellow
+                    message &= "Valid Beginning Odometer Reading is Required" & vbNewLine
                     Return False
                 Case > 0
                     BeginOdometerTextBox.BackColor = Color.White
@@ -219,6 +236,7 @@ Public Class RentalForm
             End Select
         Catch ex As Exception
             BeginOdometerTextBox.BackColor = Color.LightYellow
+            message &= "Valid Beginning Odometer Reading is Required" & vbNewLine
             Return False
         End Try
     End Function
@@ -233,6 +251,7 @@ Public Class RentalForm
             Select Case endOdometer
                 Case < 1
                     EndOdometerTextBox.BackColor = Color.LightYellow
+                    message &= "Valid Ending Odometer Reading is Required" & vbNewLine
                     Return False
                 Case > 0
                     EndOdometerTextBox.BackColor = Color.White
@@ -240,6 +259,7 @@ Public Class RentalForm
             End Select
         Catch ex As Exception
             EndOdometerTextBox.BackColor = Color.LightYellow
+            message &= "Valid Ending Odometer Reading is Required" & vbNewLine
             Return False
         End Try
     End Function
@@ -250,6 +270,7 @@ Public Class RentalForm
         If beginOdometer > endOdometer Then
             BeginOdometerTextBox.BackColor = Color.LightYellow
             EndOdometerTextBox.BackColor = Color.LightYellow
+            message &= "Ending Odometer Reading must be greater than Beginning Odometer Reading" & vbNewLine
             Return False
         ElseIf beginOdometer < endOdometer Then
             BeginOdometerValidation()
@@ -258,6 +279,7 @@ Public Class RentalForm
         Else
             BeginOdometerTextBox.BackColor = Color.LightYellow
             EndOdometerTextBox.BackColor = Color.LightYellow
+            message &= "Ending Odometer Reading must be greater than Beginning Odometer Reading" & vbNewLine
             Return False
         End If
     End Function
@@ -272,9 +294,11 @@ Public Class RentalForm
             Select Case daysNumber
                 Case < 1
                     DaysTextBox.BackColor = Color.LightYellow
+                    message &= "Number of days must be a whole number and be between 1 and 45" & vbNewLine
                     Return False
                 Case > 45
                     DaysTextBox.BackColor = Color.LightYellow
+                    message &= "Number of days must be a whole number and be between 1 and 45" & vbNewLine
                     Return False
                 Case 1 To 45
                     DaysTextBox.BackColor = Color.White
@@ -282,6 +306,7 @@ Public Class RentalForm
             End Select
         Catch ex As Exception
             DaysTextBox.BackColor = Color.LightYellow
+            message &= "Number of days must be a whole number and be between 1 and 45" & vbNewLine
             Return False
         End Try
     End Function
@@ -312,6 +337,8 @@ Public Class RentalForm
             DayChargeTextBox.Text = ""
             TotalDiscountTextBox.Text = ""
             TotalChargeTextBox.Text = ""
+            MsgBox(message, MsgBoxStyle.Critical, "User Information Error")
+            message = ""
         End If
     End Sub
 
