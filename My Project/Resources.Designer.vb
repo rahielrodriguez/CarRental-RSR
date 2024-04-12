@@ -119,7 +119,7 @@ Namespace My.Resources
         '''</summary>
         Friend ReadOnly Property List_of_States() As String
             Get
-                Return ResourceManager.GetString("List_of_States", resourceCulture)
+                Return ResourceManager.GetString("List of States", resourceCulture)
             End Get
         End Property
     End Module

@@ -2,11 +2,12 @@
 Option Strict On
 Option Compare Binary
 Imports System.Runtime.CompilerServices
+Imports System.Windows.Forms.AxHost
 
 Public Class RentalForm
 
-    Dim beginOdometer As Double
-    Dim endOdometer As Double
+    Dim beginOdometer As ULong
+    Dim endOdometer As ULong
     Dim daysNumber As Integer
     Dim listOfStates As New List(Of String)
     Dim dailyPrice As Double
@@ -42,6 +43,14 @@ Public Class RentalForm
         KilometersradioButton.Checked = False
         AAAcheckbox.Checked = False
         Seniorcheckbox.Checked = False
+        NameTextBox.BackColor = Color.White
+        AddressTextBox.BackColor = Color.White
+        CityTextBox.BackColor = Color.White
+        StateTextBox.BackColor = Color.White
+        ZipCodeTextBox.BackColor = Color.White
+        BeginOdometerTextBox.BackColor = Color.White
+        EndOdometerTextBox.BackColor = Color.White
+        DaysTextBox.BackColor = Color.White
         StatesRecord()
 
         NameTextBox.Focus()
@@ -117,12 +126,12 @@ Public Class RentalForm
 
         Dim stateRecord As String
         Try
-            FileOpen(1, "List_of_States.txt", OpenMode.Input)
+            FileOpen(1, "..\..\List of States.txt", OpenMode.Input)
             Do Until EOF(1)
                 Input(1, stateRecord)
-
                 Me.listOfStates.Add(stateRecord)
             Loop
+
         Catch ex As Exception
 
         End Try
@@ -134,30 +143,36 @@ Public Class RentalForm
         '[x]State only can have letters
         '[x]State can only contain 2 letters
         '[x]State letters have to be Upper Cases
-        '[ ]Only US States coming from a list with all states can be validated.
-        '[ ]Make it to compare user input vs states record
+        '[x]Only US States coming from a list with all states can be validated.
+        '[x]Make it to compare user input vs states record
         Dim state As Boolean
+
         If StateTextBox.Text = "" Then
             StateTextBox.BackColor = Color.LightYellow
             Return False
         Else
-            state = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z ]+$")
+            state = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Z ]+$")
             If state Then
                 For Each record In Me.listOfStates
-                    If record = UCase(StateTextBox.Text) Then
-                        StateTextBox.Text = UCase(StateTextBox.Text)
+                    If record = StateTextBox.Text Then
                         StateTextBox.BackColor = Color.White
                         Return True
                     Else
-
+                        StateTextBox.BackColor = Color.LightYellow
                     End If
                 Next
+                If StateTextBox.BackColor = Color.LightYellow Then
+                    Return False
+                Else
+
+                End If
             Else
                 StateTextBox.BackColor = Color.LightYellow
                 Return False
             End If
             Return state
         End If
+
     End Function
     Function ZipValidation() As Boolean
         'TODO
@@ -169,6 +184,7 @@ Public Class RentalForm
 
         Try
             zip = CULng(ZipCodeTextBox.Text)
+
             Select Case zip
                 Case <= 1
                     ZipCodeTextBox.BackColor = Color.LightYellow
@@ -190,7 +206,7 @@ Public Class RentalForm
 
 
         Try
-            beginOdometer = CDbl(BeginOdometerTextBox.Text)
+            beginOdometer = CULng(BeginOdometerTextBox.Text)
             BeginOdometerTextBox.BackColor = Color.White
             Return True
         Catch ex As Exception
@@ -205,7 +221,7 @@ Public Class RentalForm
 
 
         Try
-            endOdometer = CDbl(EndOdometerTextBox.Text)
+            endOdometer = CULng(EndOdometerTextBox.Text)
             Select Case endOdometer
                 Case < 1
                     EndOdometerTextBox.BackColor = Color.LightYellow
@@ -228,9 +244,8 @@ Public Class RentalForm
             EndOdometerTextBox.BackColor = Color.LightYellow
             Return False
         ElseIf beginOdometer < endOdometer Then
-            BeginOdometerTextBox.BackColor = Color.White
-            EndOdometerTextBox.BackColor = Color.White
-            Return True
+            BeginOdometerValidation()
+            EndOdometerValidation()
         Else
             BeginOdometerTextBox.BackColor = Color.LightYellow
             EndOdometerTextBox.BackColor = Color.LightYellow
@@ -312,6 +327,12 @@ Public Class RentalForm
         Discounts()
         TotalCharge()
 
+        If StateValidation() = False Then
+            Label2.Text = "It is false"
+        Else
+            Label2.Text = "Now is true"
+        End If
+
         totalClients += 1
         summaryTotalMiles += CDbl(odometerNumber)
         summaryTotalCharge += CDbl(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))
@@ -344,11 +365,16 @@ Public Class RentalForm
 
     Sub DailyCharge()
 
-        daysNumber = CInt(DaysTextBox.Text)
-        dailyPrice = 0.15
-        totalDailyCharge = dailyPrice * daysNumber
+        Try
+            daysNumber = CInt(DaysTextBox.Text)
+            dailyPrice = 0.15
+            totalDailyCharge = dailyPrice * daysNumber
 
-        DayChargeTextBox.Text = $"$ {CStr(Math.Round(totalDailyCharge, 2, MidpointRounding.AwayFromZero))}"
+            DayChargeTextBox.Text = $"$ {CStr(Math.Round(totalDailyCharge, 2, MidpointRounding.AwayFromZero))}"
+        Catch Ex As Exception
+
+
+        End Try
     End Sub
     Sub MileageCharge()
 
