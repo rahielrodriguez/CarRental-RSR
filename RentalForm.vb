@@ -9,6 +9,15 @@ Public Class RentalForm
     Dim endOdometer As Integer
     Dim daysNumber As Integer
     Dim listOfStates As New List(Of String)
+    Dim dailyPrice As Double
+    Dim totalDailyCharge As Double
+    Dim odometerNumber As Double
+    Dim mileagePrice As Double
+    Dim totalMileageCharge As Double
+    Dim beforeDiscountCharge As Double
+    Dim totalPrice As Double
+    Dim tripleAAADiscount As Double
+    Dim seniorDiscount As Double
     Sub SetDefaults()
         NameTextBox.Text = ""
         AddressTextBox.Text = ""
@@ -288,6 +297,9 @@ Public Class RentalForm
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
         FieldsValidation()
         DailyCharge()
+        MileageCharge()
+        Discounts()
+        TotalCharge()
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
@@ -300,21 +312,66 @@ Public Class RentalForm
 
     'TODO - CALCULATIONS
     '[x]Set a daily charge and calculations
-    '[ ]Set a mileage charge
-    '[ ]Set first 200 files for free
-    '[ ]Set price at 12 centes per mile from 201 to 500 miles
-    '[ ]Set price at 10 cents for mileage greater than 500
-    '[ ]If user inputs are in kilometers, convert them to miles and do calculations
-    '[ ]Apply AAA and Senior discounts
+    '[x]Set a mileage charge
+    '[x]Set first 200 files for free
+    '[x]Set price at 12 centes per mile from 201 to 500 miles
+    '[x]Set price at 10 cents for mileage greater than 500
+    '[x]If user inputs are in kilometers, convert them to miles and do calculations
+    '[x]Apply AAA and Senior discounts
 
     Sub DailyCharge()
-        Dim dailyPrice As Double
-        Dim dailyCharge As Double
 
         daysNumber = CInt(DaysTextBox.Text)
         dailyPrice = 0.15
-        dailyCharge = dailyPrice * daysNumber
+        totalDailyCharge = dailyPrice * daysNumber
 
-        DayChargeTextBox.Text = CStr(dailyCharge)
+        DayChargeTextBox.Text = CStr(Math.Round(totalDailyCharge, 2, MidpointRounding.AwayFromZero))
+    End Sub
+    Sub MileageCharge()
+
+        odometerNumber = endOdometer - beginOdometer
+
+        If KilometersradioButton.Checked Then
+            odometerNumber = odometerNumber * 1.61
+        End If
+
+        Select Case odometerNumber
+            Case <= 200
+                mileagePrice = 0
+            Case 201 To 500
+                mileagePrice = 0.12
+            Case >= 500
+                mileagePrice = 0.1
+        End Select
+
+        totalMileageCharge = mileagePrice * odometerNumber
+
+        TotalMilesTextBox.Text = $"{CStr(odometerNumber)} mi"
+        MileageChargeTextBox.Text = CStr(Math.Round(totalMileageCharge, 2, MidpointRounding.AwayFromZero))
+
+    End Sub
+    Sub Discounts()
+
+        beforeDiscountCharge = totalDailyCharge + totalMileageCharge
+        tripleAAADiscount = 0
+        seniorDiscount = 0
+
+        If AAAcheckbox.Checked Then
+            tripleAAADiscount = 0.05
+        Else
+            tripleAAADiscount = 0
+        End If
+
+        If Seniorcheckbox.Checked Then
+            seniorDiscount = 0.03
+        Else
+            seniorDiscount = 0
+        End If
+    End Sub
+    Sub TotalCharge()
+
+        TotalDiscountTextBox.Text = CStr(Math.Round((beforeDiscountCharge * tripleAAADiscount) + (beforeDiscountCharge * seniorDiscount), 2, MidpointRounding.AwayFromZero))
+        totalPrice = beforeDiscountCharge - (beforeDiscountCharge * tripleAAADiscount) - (beforeDiscountCharge * seniorDiscount)
+        TotalChargeTextBox.Text = CStr(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))
     End Sub
 End Class
