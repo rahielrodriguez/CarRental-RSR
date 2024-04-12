@@ -32,7 +32,12 @@ Public Class RentalForm
         ZipCodeTextBox.Text = ""
         BeginOdometerTextBox.Text = ""
         EndOdometerTextBox.Text = ""
+        DaysTextBox.Text = ""
+        TotalMilesTextBox.Text = ""
+        MileageChargeTextBox.Text = ""
         DayChargeTextBox.Text = ""
+        TotalDiscountTextBox.Text = ""
+        TotalChargeTextBox.Text = ""
         MilesradioButton.Checked = True
         KilometersradioButton.Checked = False
         AAAcheckbox.Checked = False
@@ -316,6 +321,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+
         Me.Close()
     End Sub
 
@@ -389,11 +395,11 @@ Public Class RentalForm
     End Sub
 
     'TODO - Summary
-    '[ ]Create a summary message box
-    '[ ]Display total number of customers in the pop up
-    '[ ]Display total number of miles driven
-    '[ ]Display total number of charges made
-    '[ ]Do not clean the summary is clear is pressed
+    '[x]Create a summary message box
+    '[x]Display total number of customers in the pop up
+    '[x]Display total number of miles driven
+    '[x]Display total number of charges made
+    '[x]Do not clean the summary is clear is pressed
 
     Sub Summary()
         MsgBox($"Total Number of Clients = {totalClients}{vbNewLine}Total Miles Driven = {summaryDisplayMiles}{vbNewLine}Total Charges Collected = {summaryTotalCharge}")
