@@ -322,7 +322,11 @@ Public Class RentalForm
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
 
-        Me.Close()
+        If MsgBox("Are you sure you want to exit?", MsgBoxStyle.YesNo, "Confirm Exit") = vbYes Then
+            Me.Close()
+        Else
+
+        End If
     End Sub
 
     Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
