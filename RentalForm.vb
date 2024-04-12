@@ -325,7 +325,7 @@ Public Class RentalForm
         dailyPrice = 0.15
         totalDailyCharge = dailyPrice * daysNumber
 
-        DayChargeTextBox.Text = CStr(Math.Round(totalDailyCharge, 2, MidpointRounding.AwayFromZero))
+        DayChargeTextBox.Text = $"$ {CStr(Math.Round(totalDailyCharge, 2, MidpointRounding.AwayFromZero))}"
     End Sub
     Sub MileageCharge()
 
@@ -347,7 +347,7 @@ Public Class RentalForm
         totalMileageCharge = mileagePrice * odometerNumber
 
         TotalMilesTextBox.Text = $"{CStr(odometerNumber)} mi"
-        MileageChargeTextBox.Text = CStr(Math.Round(totalMileageCharge, 2, MidpointRounding.AwayFromZero))
+        MileageChargeTextBox.Text = $"$ {CStr(Math.Round(totalMileageCharge, 2, MidpointRounding.AwayFromZero))}"
 
     End Sub
     Sub Discounts()
@@ -370,8 +370,11 @@ Public Class RentalForm
     End Sub
     Sub TotalCharge()
 
-        TotalDiscountTextBox.Text = CStr(Math.Round((beforeDiscountCharge * tripleAAADiscount) + (beforeDiscountCharge * seniorDiscount), 2, MidpointRounding.AwayFromZero))
+        TotalDiscountTextBox.Text = $"$ {CStr(Math.Round((beforeDiscountCharge * tripleAAADiscount) + (beforeDiscountCharge * seniorDiscount), 2, MidpointRounding.AwayFromZero))}"
         totalPrice = beforeDiscountCharge - (beforeDiscountCharge * tripleAAADiscount) - (beforeDiscountCharge * seniorDiscount)
-        TotalChargeTextBox.Text = CStr(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))
+        TotalChargeTextBox.Text = $"$ {CStr(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))}"
     End Sub
+
+    'TODO - Summary
+
 End Class
