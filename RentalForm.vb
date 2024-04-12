@@ -6,8 +6,8 @@ Imports System.Windows.Forms.AxHost
 
 Public Class RentalForm
 
-    Dim beginOdometer As ULong
-    Dim endOdometer As ULong
+    Dim beginOdometer As Double
+    Dim endOdometer As Double
     Dim daysNumber As Integer
     Dim listOfStates As New List(Of String)
     Dim dailyPrice As Double
@@ -72,8 +72,10 @@ Public Class RentalForm
 
             If name Then
                 NameTextBox.BackColor = Color.White
+                Return True
             Else
                 NameTextBox.BackColor = Color.LightYellow
+                Return False
             End If
             Return name
         End If
@@ -94,8 +96,10 @@ Public Class RentalForm
 
             If address Then
                 AddressTextBox.BackColor = Color.White
+                Return True
             Else
                 AddressTextBox.BackColor = Color.LightYellow
+                Return False
             End If
             Return address
 
@@ -115,8 +119,10 @@ Public Class RentalForm
             city = System.Text.RegularExpressions.Regex.IsMatch(CityTextBox.Text, "^[A-Za-z ]+$")
             If city Then
                 CityTextBox.BackColor = Color.White
+                Return True
             Else
                 CityTextBox.BackColor = Color.LightYellow
+                Return False
             End If
             Return city
         End If
@@ -179,12 +185,9 @@ Public Class RentalForm
         '[x]Zip cannot be blank
         '[x]Zip only can have a whole number
 
-
-        Dim zip As ULong
-
+        Dim zip As Double
         Try
-            zip = CULng(ZipCodeTextBox.Text)
-
+            zip = CDbl(ZipCodeTextBox.Text)
             Select Case zip
                 Case <= 1
                     ZipCodeTextBox.BackColor = Color.LightYellow
@@ -204,11 +207,16 @@ Public Class RentalForm
         '[x]Begin Odometer cannot be blank
         '[x]Begin Odometer only can have a whole number
 
-
         Try
-            beginOdometer = CULng(BeginOdometerTextBox.Text)
-            BeginOdometerTextBox.BackColor = Color.White
-            Return True
+            beginOdometer = CDbl(BeginOdometerTextBox.Text)
+            Select Case beginOdometer
+                Case < 1
+                    BeginOdometerTextBox.BackColor = Color.LightYellow
+                    Return False
+                Case > 0
+                    BeginOdometerTextBox.BackColor = Color.White
+                    Return True
+            End Select
         Catch ex As Exception
             BeginOdometerTextBox.BackColor = Color.LightYellow
             Return False
@@ -221,7 +229,7 @@ Public Class RentalForm
 
 
         Try
-            endOdometer = CULng(EndOdometerTextBox.Text)
+            endOdometer = CDbl(EndOdometerTextBox.Text)
             Select Case endOdometer
                 Case < 1
                     EndOdometerTextBox.BackColor = Color.LightYellow
@@ -246,6 +254,7 @@ Public Class RentalForm
         ElseIf beginOdometer < endOdometer Then
             BeginOdometerValidation()
             EndOdometerValidation()
+            Return True
         Else
             BeginOdometerTextBox.BackColor = Color.LightYellow
             EndOdometerTextBox.BackColor = Color.LightYellow
@@ -276,69 +285,34 @@ Public Class RentalForm
             Return False
         End Try
     End Function
-    Sub FieldsValidation()
+    Function FieldsValidation() As Boolean
         StatesRecord()
-        NameValidation()
-        AddressValidation()
-        CityValidation()
-        StateValidation()
-        ZipValidation()
-        BeginOdometerValidation()
-        EndOdometerValidation()
-        OdometerValidation()
-        DayChargeValidation()
-    End Sub
-    'Private Sub TextBox_Leave(sender As Object, e As EventArgs) Handles NameTextBox.Leave, AddressTextBox.Leave, CityTextBox.Leave, StateTextBox.Leave, ZipCodeTextBox.Leave, BeginOdometerTextBox.Leave, EndOdometerTextBox.Leave, DayChargeTextBox.Leave
-
-    '    If NameValidation() = False Then
-    '        NameTextBox.Focus()
-
-    '    ElseIf AddressValidation() = False Then
-    '        AddressTextBox.Focus()
-
-    '    ElseIf CityValidation() = False Then
-    '        CityTextBox.Focus()
-
-    '    ElseIf StateValidation() = False Then
-    '        StateTextBox.Focus()
-
-    '    ElseIf ZipValidation() = False Then
-    '        ZipCodeTextBox.Focus()
-
-    '    ElseIf BeginOdometerValidation() = False Then
-    '        BeginOdometerTextBox.Focus()
-
-    '    ElseIf EndOdometerValidation() = False Then
-    '        EndOdometerTextBox.Focus()
-
-    '    ElseIf OdometerValidation() = False Then
-    '        BeginOdometerTextBox.Focus()
-
-    '    ElseIf DayChargeValidation() = False Then
-    '        DaysTextBox.Focus()
-    '    End If
-
-    'End Sub
-
-    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
-        FieldsValidation()
-        DailyCharge()
-        MileageCharge()
-        Discounts()
-        TotalCharge()
-
-        If StateValidation() = False Then
-            Label2.Text = "It is false"
+        If NameValidation() And AddressValidation() And CityValidation() And StateValidation() And ZipValidation() And BeginOdometerValidation() And EndOdometerValidation() And OdometerValidation() And DayChargeValidation() = True Then
+            Return True
         Else
-            Label2.Text = "Now is true"
+            Return False
         End If
+    End Function
+    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
+        If FieldsValidation() = True Then
+            DailyCharge()
+            MileageCharge()
+            Discounts()
+            TotalCharge()
 
-        totalClients += 1
-        summaryTotalMiles += CDbl(odometerNumber)
-        summaryTotalCharge += CDbl(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))
+            totalClients += 1
+            summaryTotalMiles += CDbl(odometerNumber)
+            summaryTotalCharge += CDbl(Math.Round(totalPrice, 2, MidpointRounding.AwayFromZero))
 
-        summaryDisplayMiles = $"{CStr(summaryTotalMiles)}"
-        summaryDisplayCharge = $"{CStr(summaryTotalCharge)}"
+            summaryDisplayMiles = $"{CStr(summaryTotalMiles)}"
+            summaryDisplayCharge = $"{CStr(summaryTotalCharge)}"
+        Else
+            TotalMilesTextBox.Text = ""
+            MileageChargeTextBox.Text = ""
+            DayChargeTextBox.Text = ""
+            TotalDiscountTextBox.Text = ""
+            TotalChargeTextBox.Text = ""
+        End If
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
