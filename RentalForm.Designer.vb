@@ -261,6 +261,7 @@ Partial Class RentalForm
         Me.KilometersradioButton.Size = New System.Drawing.Size(130, 24)
         Me.KilometersradioButton.TabIndex = 1
         Me.KilometersradioButton.Text = "Kilometers"
+        Me.RentalFormToolTip.SetToolTip(Me.KilometersradioButton, "If odometer readings are in miles, select miles.")
         Me.KilometersradioButton.UseVisualStyleBackColor = True
         '
         'MilesradioButton
@@ -274,6 +275,8 @@ Partial Class RentalForm
         Me.MilesradioButton.TabIndex = 0
         Me.MilesradioButton.TabStop = True
         Me.MilesradioButton.Text = "Miles"
+        Me.RentalFormToolTip.SetToolTip(Me.MilesradioButton, "If odometer readings are in miles, select miles." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "If odometer readings are in Km," &
+        " select Km and " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "they will be converted to miles." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10))
         Me.MilesradioButton.UseVisualStyleBackColor = True
         '
         'DiscountGroupbox
@@ -301,6 +304,7 @@ Partial Class RentalForm
         Me.Seniorcheckbox.Size = New System.Drawing.Size(261, 24)
         Me.Seniorcheckbox.TabIndex = 1
         Me.Seniorcheckbox.Text = "Senior Citizen Discount"
+        Me.RentalFormToolTip.SetToolTip(Me.Seniorcheckbox, "If you are a AAA Member or a Senior Citizen,")
         Me.Seniorcheckbox.UseVisualStyleBackColor = True
         '
         'AAAcheckbox
@@ -312,6 +316,7 @@ Partial Class RentalForm
         Me.AAAcheckbox.Size = New System.Drawing.Size(221, 24)
         Me.AAAcheckbox.TabIndex = 0
         Me.AAAcheckbox.Text = "AAA Member Discount"
+        Me.RentalFormToolTip.SetToolTip(Me.AAAcheckbox, "If you are a AAA Member or a Senior Citizen,")
         Me.AAAcheckbox.UseVisualStyleBackColor = True
         '
         'CalculateButton
@@ -616,7 +621,8 @@ Partial Class RentalForm
         Me.Name = "RentalForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Acme Car Rental Service"
-        Me.RentalFormToolTip.SetToolTip(Me, "No Tool Tip Yet!!")
+        Me.RentalFormToolTip.SetToolTip(Me, "This program is made to calculate the total charge that a " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "client has to pay to " &
+        "the Car Rental Service that he/she used.")
         Me.OdometerGroupbox.ResumeLayout(False)
         Me.OdometerGroupbox.PerformLayout()
         Me.DiscountGroupbox.ResumeLayout(False)
