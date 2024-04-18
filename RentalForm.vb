@@ -318,7 +318,7 @@ Public Class RentalForm
             Return False
         End If
     End Function
-    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
+    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click, CalculateToolStripMenuItem.Click, FileToolStripMenuItem.Click
         If FieldsValidation() = True Then
             DailyCharge()
             MileageCharge()
@@ -342,7 +342,7 @@ Public Class RentalForm
         End If
     End Sub
 
-    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click, ExitToolStripMenuItem1.Click
 
         If MsgBox("Are you sure you want to exit?", MsgBoxStyle.YesNo, "Confirm Exit") = vbYes Then
             Me.Close()
@@ -351,7 +351,7 @@ Public Class RentalForm
         End If
     End Sub
 
-    Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
+    Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click, ClearToolStripMenuItem.Click, ClearToolStripMenuItem1.Click
         SetDefaults()
     End Sub
 
@@ -436,7 +436,7 @@ Public Class RentalForm
         MsgBox($"Total Number of Clients = {totalClients}{vbNewLine}Total Miles Driven = {summaryDisplayMiles}{vbNewLine}Total Charges Collected = {summaryTotalCharge}")
     End Sub
 
-    Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
+    Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click, SummaryToolStripMenuItem.Click, SummaryToolStripMenuItem1.Click
         Summary()
     End Sub
 End Class

@@ -321,6 +321,7 @@ Partial Class RentalForm
         '
         'ExitButton
         '
+        Me.ExitButton.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.ExitButton.Location = New System.Drawing.Point(544, 468)
         Me.ExitButton.Margin = New System.Windows.Forms.Padding(4)
         Me.ExitButton.Name = "ExitButton"
@@ -472,30 +473,30 @@ Partial Class RentalForm
         Me.ContextMenuStrip.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.ContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ClearToolStripMenuItem, Me.SummaryToolStripMenuItem, Me.ExitToolStripMenuItem})
         Me.ContextMenuStrip.Name = "ContextMenuStrip"
-        Me.ContextMenuStrip.Size = New System.Drawing.Size(141, 100)
+        Me.ContextMenuStrip.Size = New System.Drawing.Size(211, 128)
         '
         'FileToolStripMenuItem
         '
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(140, 24)
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
         Me.FileToolStripMenuItem.Text = "&Calculate"
         '
         'ClearToolStripMenuItem
         '
         Me.ClearToolStripMenuItem.Name = "ClearToolStripMenuItem"
-        Me.ClearToolStripMenuItem.Size = New System.Drawing.Size(140, 24)
+        Me.ClearToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
         Me.ClearToolStripMenuItem.Text = "Cl&ear"
         '
         'SummaryToolStripMenuItem
         '
         Me.SummaryToolStripMenuItem.Name = "SummaryToolStripMenuItem"
-        Me.SummaryToolStripMenuItem.Size = New System.Drawing.Size(140, 24)
+        Me.SummaryToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
         Me.SummaryToolStripMenuItem.Text = "&Summary"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(140, 24)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
         Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'TopMenuStrip
@@ -519,25 +520,25 @@ Partial Class RentalForm
         'CalculateToolStripMenuItem
         '
         Me.CalculateToolStripMenuItem.Name = "CalculateToolStripMenuItem"
-        Me.CalculateToolStripMenuItem.Size = New System.Drawing.Size(154, 26)
+        Me.CalculateToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.CalculateToolStripMenuItem.Text = "&Calculate"
         '
         'ClearToolStripMenuItem1
         '
         Me.ClearToolStripMenuItem1.Name = "ClearToolStripMenuItem1"
-        Me.ClearToolStripMenuItem1.Size = New System.Drawing.Size(154, 26)
+        Me.ClearToolStripMenuItem1.Size = New System.Drawing.Size(224, 26)
         Me.ClearToolStripMenuItem1.Text = "Cl&ear"
         '
         'SummaryToolStripMenuItem1
         '
         Me.SummaryToolStripMenuItem1.Name = "SummaryToolStripMenuItem1"
-        Me.SummaryToolStripMenuItem1.Size = New System.Drawing.Size(154, 26)
+        Me.SummaryToolStripMenuItem1.Size = New System.Drawing.Size(224, 26)
         Me.SummaryToolStripMenuItem1.Text = "&Summary"
         '
         'ExitToolStripMenuItem1
         '
         Me.ExitToolStripMenuItem1.Name = "ExitToolStripMenuItem1"
-        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(154, 26)
+        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(224, 26)
         Me.ExitToolStripMenuItem1.Text = "&Exit"
         '
         'RentalForm
