@@ -570,7 +570,7 @@ Partial Class RentalForm
         '
         'RentalForm
         '
-        Me.AcceptButton = Me.ClearButton
+        Me.AcceptButton = Me.CalculateButton
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.ExitButton
